@@ -1,6 +1,15 @@
 const express = require("express")
-const { signupUser, loginUser, verifyEmail } = require("../controllers/user")
+const {
+  signupUser,
+  loginUser,
+  verifyEmail,
+  getUserById,
+  updateUserBySession,
+  getUserBySession,
+  deleteUserBySession,
+} = require("../controllers/user")
 const sendResponse = require("../middlewares/response")
+const { protect } = require("../middlewares/auth")
 
 const router = express.Router()
 
@@ -11,5 +20,9 @@ router.get(
   verifyEmail,
   sendResponse
 )
+router.get("/:id", getUserById)
+router.put("/me", protect, updateUserBySession)
+router.get("/me", protect, getUserBySession)
+router.delete("/me", protect, deleteUserBySession)
 
 module.exports = router

@@ -85,10 +85,9 @@ module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
   }
   if (!user) return next()
   const isMatchingPassword = await bcryptCompare(
-req.body.password,
-    user.password,
+    req.body.password,
+    user.password
   )
-  console.log(isMatchingPassword)
   if (isMatchingPassword === false) return next()
   const token = await signJwt({ _id: user._id })
   req.response = {
@@ -97,6 +96,89 @@ req.body.password,
     data: {
       user,
       token,
+    },
+  }
+  return next()
+})
+
+module.exports.updateUserBySession = routeTryCatcher(async function (
+  req,
+  res,
+  next
+) {
+  const {
+    profileImage,
+    email,
+    password,
+    firstName,
+    lastName,
+    userName,
+    previousHealthConditions,
+    currentHealthConditions,
+    dob,
+  } = req.body
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    {
+      profileImage,
+      email,
+      password,
+      firstName,
+      userName,
+      lastName,
+      previousHealthConditions,
+      currentHealthConditions,
+      dob,
+    },
+    { new: true }
+  )
+  req.response = {
+    message: "Updated successfully!",
+    status: 200,
+    data: {
+      user,
+    },
+  }
+  return next()
+})
+
+module.exports.getUserBySession = routeTryCatcher(async function (
+  req,
+  res,
+  next
+) {
+  req.response = {
+    message: "Success",
+    status: 200,
+    data: {
+      user: req.user,
+    },
+  }
+  return next()
+})
+
+module.exports.deleteUserBySession = routeTryCatcher(async function (
+  req,
+  res,
+  next
+) {
+  await User.findOneAndDelete({ _id: req.user._id })
+  req.response = {
+    message: "Success",
+    status: 204,
+    data: {
+      user: req.user,
+    },
+  }
+  return next()
+})
+
+module.exports.getUserById = routeTryCatcher(async function (req, res, next) {
+  req.response = {
+    message: "Success",
+    status: 200,
+    data: {
+      user: await User.findOne({ _id: req.params.id }),
     },
   }
   return next()

@@ -2,6 +2,10 @@ const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema(
   {
+    profileImage: {
+      type: String,
+      default: ""
+    },
     firstName: {
       type: String,
       required: [true, "Please provide your first name"],
