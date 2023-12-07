@@ -1,9 +1,9 @@
-
+const User = require("../models/user")
 
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
-module.exports.bcryptEncrypt = async function(value){
+module.exports.bcryptEncrypt = async function (value) {
   return await bcrypt.hash(value, 12)
 }
 

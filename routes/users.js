@@ -20,9 +20,9 @@ router.get(
   verifyEmail,
   sendResponse
 )
-router.get("/:id", protect, getUserById)
-router.put("/me", protect, updateUserBySession)
-router.get("/me", protect, getUserBySession)
-router.delete("/me", protect, deleteUserBySession)
+router.put("/me", protect, updateUserBySession, sendResponse)
+router.get("/me", protect, getUserBySession, sendResponse)
+router.delete("/me", protect, deleteUserBySession, sendResponse)
+router.get("/:id", protect, getUserById, sendResponse)
 
 module.exports = router
