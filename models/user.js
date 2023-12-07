@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema(
     },
     userName: {
       type: String,
-      required: [true, "Please provide your username"],
       unique: [true, "Username is already taken"],
+      default: "",
     },
     email: {
       type: String,
@@ -28,12 +28,12 @@ const userSchema = new mongoose.Schema(
       type: {
         type: String,
         enum: ["Point"],
-        required: [true, "Invalid location"],
+        default: "Point",
       },
       coordinates: {
         type: [Number],
         index: "2dsphere",
-        required: [true, "Invalid coordinates"],
+        default: [0, 0],
       },
     },
     previousHealthConditions: {
@@ -46,6 +46,15 @@ const userSchema = new mongoose.Schema(
     },
     dob: {
       type: Date,
+    },
+    emailVerificationToken: String,
+    passwordResetToken: String,
+    expireAt: {
+      type: Date,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {

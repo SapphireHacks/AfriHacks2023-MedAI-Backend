@@ -1,9 +1,15 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express")
+const { signupUser, loginUser, verifyEmail } = require("../controllers/user")
+const sendResponse = require("../middlewares/response")
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const router = express.Router()
 
-module.exports = router;
+router.post("/signup", signupUser, sendResponse)
+router.post("/login", loginUser, sendResponse)
+router.get(
+  "/verify-email/:id/:emailVerificationToken",
+  verifyEmail,
+  sendResponse
+)
+
+module.exports = router
