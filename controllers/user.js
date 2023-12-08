@@ -23,14 +23,12 @@ module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
         subject: "Welcome to MedAI",
       }
       const welcomeOptions = {
-        firstName,
-        userName,
         emailVerificationLink: `${process.env.CLIENT_URL}/verify-email/${user._id}/${user.emailVerificationToken}`,
         clientUrl: process.env.CLIENT_URL,
       }
       await new EmailSender({
         msg: welcomeMsg,
-        template: "welcome",
+        template: "verifyEmail",
         options: welcomeOptions,
       }).sendEmail()
       delete user.password
@@ -44,6 +42,7 @@ module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
       }
       return next()
     } catch (err) {
+      console.log(err)
       await User.findByIdAndDelete(user._id)
       req.response = {
         message: "Failed to create your account. Please try again.",
