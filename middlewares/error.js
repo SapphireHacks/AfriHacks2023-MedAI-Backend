@@ -1,5 +1,4 @@
-const CustomError = require("../utils/error")
-
+const { handleValidationError, handleTypeError, handleCastError, handleDuplicateKeyError} = require("../utils/errorFormatters")
 const throwDevError = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -23,26 +22,7 @@ const throwProdError = (err, res) => {
         statusCode: 500,
       })
 }
-const handleDuplicateKeyError = (err) => {
-  const key = Object.keys(err.keyValue)[0]
-  const message = `Duplicate error: The ${key} is already taken. Try another ${key}`
-  return new CustomError(message, 400)
-}
-const handleCastError = (err) => {
-  const invalid = err.path
-  const message = `Invalid value for ${invalid}`
-  return new CustomError(message, 400)
-}
-const handleTypeError = () => {
-  const message = "Something went wrong!"
-  return new CustomError(message, 500)
-}
-const handleValidationError = (err) => {
-  const message = Object.values(err.errors)
-    .map((val) => val.message)
-    .join(", ")
-  return new CustomError(message, 400)
-}
+
 module.exports = (err, req, res, next) => {
   console.log(err)
   err.status = err.status || "error"
