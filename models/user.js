@@ -8,11 +8,11 @@ const userSchema = new mongoose.Schema(
     },
     firstName: {
       type: String,
-      required: [true, "Please provide your first name"],
+      default: ""
     },
     lastName: {
       type: String,
-      required: [true, "Please provide your last name"],
+      default: ""
     },
     userName: {
       type: String,

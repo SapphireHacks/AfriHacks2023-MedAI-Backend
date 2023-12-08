@@ -7,11 +7,8 @@ const crypto = require("crypto")
 module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
   const expireAt = new Date(Date.now())
   expireAt.setMonth(expireAt.getMonth() + 1)
-  const { firstName, lastName, userName, email, password } = req.body
+  const { email, password } = req.body
   let user = new User({
-    firstName,
-    lastName,
-    userName,
     email,
     password: await bcryptEncrypt(password),
     emailVerificationToken: crypto.randomBytes(48).toString("hex"),
