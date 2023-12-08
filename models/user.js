@@ -16,8 +16,7 @@ const userSchema = new mongoose.Schema(
     },
     userName: {
       type: String,
-      unique: [true, "Username is already taken"],
-      default: "",
+      unique: true,
     },
     email: {
       type: String,
