@@ -1,4 +1,4 @@
-# Medai - Node.js Frontend
+# Medai - Node.js Backend
 
 Welcome to the Medai project! This is the frontend repository built with Node.js.
 
