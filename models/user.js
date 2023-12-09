@@ -14,10 +14,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
-    userName: {
-      type: String,
-      unique: true,
-    },
+    // userName: {
+    //   type: String,
+    //   unique: true,
+    // },
     email: {
       type: String,
       required: [true, "Please provide your email address"],
