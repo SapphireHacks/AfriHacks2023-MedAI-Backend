@@ -79,19 +79,19 @@ module.exports.verifyEmail = routeTryCatcher(async (req, _res, next) => {
 })
 
 module.exports.logoutUser = routeTryCatcher(async function(req, res, next){
+  console.log(req.session)
   req.session && req.session.destroy()
   req.response = {
     status: 200,
     message: "You are logged out!",
   }
-  return next
+  return next()
 })
 
 module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
   if (req.session) {
     const user = req.session.token ? await validateToken(req.session.token) : null
     if (user) {
-      console.log(user)
       req.response = {
         message: "You are logged in!",
         status: 200,
