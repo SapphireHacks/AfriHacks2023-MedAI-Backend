@@ -28,7 +28,7 @@ module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
         subject: "Welcome to MedAI",
       }
       const welcomeOptions = {
-        emailVerificationLink: `${process.env.CLIENT_URL}/verify-email?userId=${user._id}&verificationToken=${user.emailVerificationToken}`,
+        emailVerificationLink: `${process.env.CLIENT_URL}/verify-email/${user._id}/${user.emailVerificationToken}`,
         clientUrl: process.env.CLIENT_URL,
       }
       await new EmailSender({
