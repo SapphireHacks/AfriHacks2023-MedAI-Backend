@@ -5,7 +5,7 @@ module.exports = function startSocketServer(server) {
   const io = new Server(server, {
     cors: {
       origin: [
-        "https://localhost:3000",
+        "http://localhost:3000",
         "https://afrihacks2023-medai-frontend-sapphire-hacks-projects.vercel.app/",
       ],
       methods: ["PUT", "GET", "POST", "DELETE", "OPTIONS"],
