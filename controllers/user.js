@@ -1,6 +1,11 @@
 const User = require("../models/user")
 const { routeTryCatcher } = require("../utils/controllers")
-const { bcryptEncrypt, bcryptCompare, signJwt } = require("../utils/security")
+const {
+  bcryptEncrypt,
+  bcryptCompare,
+  signJwt,
+  validateToken,
+} = require("../utils/security")
 const EmailSender = require("../utils/email")
 const crypto = require("crypto")
 
@@ -73,7 +78,31 @@ module.exports.verifyEmail = routeTryCatcher(async (req, _res, next) => {
   return next()
 })
 
+module.exports.logoutUser = routeTryCatcher(async function(req, res, next){
+  req.session && req.session.destroy()
+  req.response = {
+    status: 200,
+    message: "You are logged out!",
+  }
+  return next
+})
+
 module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
+  if (req.session) {
+    const user = await validateToken(req.session.token)
+    if (user) {
+      console.log(user)
+      req.response = {
+        message: "You are logged in!",
+        status: 200,
+        data: {
+          user,
+          token: req.session.token,
+        },
+      }
+      return next()
+    }
+  }
   const user = await User.findOne({ email: req.body.email })
   req.response = {
     message: "Invalid credentials!",
@@ -85,7 +114,8 @@ module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
     user.password
   )
   if (isMatchingPassword === false) return next()
-  const token = await signJwt({ _id: user._id })
+  const token = signJwt({ _id: user._id })
+  req.session.token = token
   req.response = {
     message: "You are logged in!",
     status: 200,

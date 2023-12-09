@@ -7,6 +7,7 @@ const {
   updateUserBySession,
   getUserBySession,
   deleteUserBySession,
+  logoutUser,
 } = require("../controllers/user")
 const sendResponse = require("../middlewares/response")
 const { protect } = require("../middlewares/auth")
@@ -15,6 +16,7 @@ const router = express.Router()
 
 router.post("/signup", signupUser, sendResponse)
 router.post("/login", loginUser, sendResponse)
+router.get("/logout", logoutUser, sendResponse)
 router.get(
   "/verify-email/:id/:emailVerificationToken",
   verifyEmail,

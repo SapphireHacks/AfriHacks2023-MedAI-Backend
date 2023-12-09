@@ -11,6 +11,16 @@ dotenv.config({
   path: path.resolve(__dirname, ".env"),
 })
 const app = express()
+const session = require("express-session")
+const MongoDBStore = require("connect-mongodb-session")(session)
+const store = new MongoDBStore({
+  uri: process.env.CONNECTION_STRING.replace(
+    "<password>",
+    process.env.DB_PASSWORD
+  ),
+  collection: "sessions",
+  expires: 1000 * 60 * 60 * 24 * 30,
+})
 
 app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "pug")
@@ -20,6 +30,20 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
+
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV !== "dev",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      path: "/",
+    },
+    store: store,
+  })
+)
 
 app.use("/api/v1", indexRouter)
 app.use("/api/v1/users", usersRouter)
