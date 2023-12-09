@@ -89,7 +89,7 @@ module.exports.logoutUser = routeTryCatcher(async function(req, res, next){
 
 module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
   if (req.session) {
-    const user = await validateToken(req.session.token)
+    const user = req.session.token ? await validateToken(req.session.token) : null
     if (user) {
       console.log(user)
       req.response = {
