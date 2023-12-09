@@ -30,7 +30,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
-
+const cors = require("cors")
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3001",
+      "http://localhost:3000",
+      "http://localhost:3002",
+    ],
+    credentials: true,
+  })
+)
 app.use(
   session({
     secret: process.env.JWT_SECRET,
