@@ -17,3 +17,10 @@ module.exports.getMultipleConversations = async function (data) {
   const ConversationQueryBuilder = new QueryBuilder(Conversation, query)
   return await ConversationQueryBuilder.find()
 }
+
+module.exports.deleteMultipleConversations = async function (query = {}) {
+  return await Conversation.findAndDelete(query)
+}
+module.exports.deleteSingleConversationById = async function (id) {
+  return await Conversation.findByIdAndDelete(id)
+}
