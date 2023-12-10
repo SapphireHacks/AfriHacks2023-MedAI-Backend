@@ -6,6 +6,7 @@ module.exports = function startSocketServer(server) {
     cors: {
       origin: [
         "http://localhost:3000",
+        "https://medai-afrihacks2023.vercel.app",
         "https://afrihacks2023-medai-frontend-sapphire-hacks-projects.vercel.app/",
       ],
       methods: ["PUT", "GET", "POST", "DELETE", "OPTIONS"],
