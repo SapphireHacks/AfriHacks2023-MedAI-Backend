@@ -40,23 +40,21 @@ const getManyConversationsHandler = socketTryCatcher(
     })
   }
 )
-const deleteAllUserConversations = socketTryCatcher(
-  async (_io, socket, data = {}) => {
-    const done = await deleteMultipleConversations({
-      participants: {
-        $in: socket.user._id.toString(),
-      },
-    })
-    socket.emit(events.deleteAll, {
-      done: true,
-      message: "Successfully cleared history!",
-    })
-  }
-)
+const deleteAllUserConversations = socketTryCatcher(async (_io, socket) => {
+  await deleteMultipleConversations({
+    participants: {
+      $in: socket.user._id.toString(),
+    },
+  })
+  socket.emit(events.deleteAll, {
+    done: true,
+    message: "Successfully cleared history!",
+  })
+})
 
 const deleteOneConversationHandler = socketTryCatcher(
   async (_io, socket, data) => {
-    const done = await deleteSingleConversationById(data.conversationId)
+    await deleteSingleConversationById(data.conversationId)
     socket.emit(events.deleteOne, {
       done: true,
       message: "Successfully deleted conversation!",
