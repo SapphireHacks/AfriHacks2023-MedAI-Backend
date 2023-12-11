@@ -134,7 +134,7 @@ module.exports.routeControllers = {
   }),
   getAll: routeTryCatcher(async function (req, res, next) {
     req.response = {
-      community: await module.exports.getMultipleCommunities({
+      communities: await module.exports.getMultipleCommunities({
         search: req.query.search,
         page: req.query.page,
         limit: req.query.limit,
