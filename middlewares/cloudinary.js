@@ -8,7 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDNARY_API_SECRET,
 })
 module.exports.geturl = async (req, res, next) => {
-  if(!req.files || req.files.length === 0) return next()
+  if (!req.files || req.files.length === 0) return next()
   const done = await Promise.allSettled(
     req.files.map(async (file) => {
       if (file) {
