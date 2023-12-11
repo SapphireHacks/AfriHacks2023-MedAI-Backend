@@ -158,7 +158,7 @@ module.exports.updateUserBySession = routeTryCatcher(async function (
       lastName,
       previousHealthConditions,
       currentHealthConditions,
-      hasAcceptedCommunityTerms
+      hasAcceptedCommunityTerms,
       dob,
     },
     { new: true }
