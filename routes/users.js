@@ -10,7 +10,9 @@ const {
   logoutUser,
 } = require("../controllers/user")
 const sendResponse = require("../middlewares/response")
+const { multerUpload } = require("../middlewares/multer")
 const { protect } = require("../middlewares/auth")
+const { geturl } = require("../middlewares/cloudinary")
 
 const router = express.Router()
 
@@ -22,7 +24,14 @@ router.get(
   verifyEmail,
   sendResponse
 )
-router.put("/me", protect, updateUserBySession, sendResponse)
+router.put(
+  "/me",
+  protect,
+  multerUpload.any(),
+  geturl,
+  updateUserBySession,
+  sendResponse
+)
 router.get("/me", protect, getUserBySession, sendResponse)
 router.delete("/me", protect, deleteUserBySession, sendResponse)
 router.get("/:id", protect, getUserById, sendResponse)

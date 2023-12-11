@@ -12,12 +12,13 @@ const crypto = require("crypto")
 module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
   const expireAt = new Date(Date.now())
   expireAt.setMonth(expireAt.getMonth() + 1)
-  const { email, password } = req.body
+  const { email, password, hasAcceptedAppTermsOfService } = req.body
   let user = new User({
     email,
     password: await bcryptEncrypt(password),
     emailVerificationToken: crypto.randomBytes(48).toString("hex"),
     expireAt,
+    hasAcceptedAppTermsOfService,
   })
   user = await user.save()
   if (user) {
@@ -78,7 +79,7 @@ module.exports.verifyEmail = routeTryCatcher(async (req, _res, next) => {
   return next()
 })
 
-module.exports.logoutUser = routeTryCatcher(async function(req, res, next){
+module.exports.logoutUser = routeTryCatcher(async function (req, res, next) {
   console.log(req.session)
   req.session && req.session.destroy()
   req.response = {
@@ -90,7 +91,9 @@ module.exports.logoutUser = routeTryCatcher(async function(req, res, next){
 
 module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
   if (req.session) {
-    const user = req.session.token ? await validateToken(req.session.token) : null
+    const user = req.session.token
+      ? await validateToken(req.session.token)
+      : null
     if (user) {
       req.response = {
         message: "You are logged in!",

@@ -59,6 +59,18 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    hasAcceptedCommunityTerms: {
+      type:  Boolean,
+      default: false
+    },
+    hasAcceptedAppTermsOfService: {
+      type: Boolean,
+      required: [true, "To signup you must agree to MedAI's terms of service"],
+    },
+    reportsCount: {
+      type: Number,
+      default: 0
+    }
   },
   {
     toObject: {

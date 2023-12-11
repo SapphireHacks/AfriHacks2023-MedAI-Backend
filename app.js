@@ -6,6 +6,7 @@ const globalErrorHandler = require("./middlewares/error")
 const CustomError = require("./utils/error")
 const indexRouter = require("./routes/index")
 const usersRouter = require("./routes/users")
+const communitiesRouter = require("./routes/communities")
 const dotenv = require("dotenv")
 dotenv.config({
   path: path.resolve(__dirname, ".env"),
@@ -58,8 +59,10 @@ app.use(
   })
 )
 
+app.use("/", indexRouter)
 app.use("/api/v1", indexRouter)
 app.use("/api/v1/users", usersRouter)
+app.use("/api/v1/communities", communitiesRouter)
 
 app.all("*", (req, _, next) => {
   next(
