@@ -4,7 +4,7 @@ const QueryBuilder = require("../utils/QueryBuilder")
 const {
   findMembership,
   deleteMembership,
-  getAllMemberships,
+  getAllUserMemberships,
   createMembership,
 } = require("./membership")
 
@@ -21,6 +21,7 @@ module.exports.createCommunity = async function (data) {
   })
   return await community.save()
 }
+
 module.exports.updateCommunity = async function (data) {
   const {
     communityId,
@@ -58,7 +59,7 @@ module.exports.leaveCommunity = async function (data) {
 }
 
 module.exports.getAllUsersCommunities = async function (data) {
-  return await getAllMemberships({ member: data.member })
+  return await getAllUserMemberships({ member: data.member })
 }
 
 module.exports.getMultipleCommunities = async function (data) {
