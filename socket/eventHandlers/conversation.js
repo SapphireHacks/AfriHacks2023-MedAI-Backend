@@ -63,7 +63,7 @@ const deleteOneConversationHandler = socketTryCatcher(
   }
 )
 
-module.exports = {
+module.exports.eventHandlers = {
   [events.new]: createConversationHandler,
   [events.getMany]: getManyConversationsHandler,
   [events.deleteOne]: deleteOneConversationHandler,

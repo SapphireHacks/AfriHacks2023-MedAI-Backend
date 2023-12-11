@@ -8,10 +8,18 @@ module.exports.findMembership = async function (data) {
   })
 }
 
-module.exports.getAllMemberships = async function (data) {
-  return await Membership.find({
-    member: data.member,
-  }) || []
+module.exports.getAllUserMemberships = async function (userId) {
+  return (
+    (await Membership.find({
+      member: userId,
+    })) || []
+  )
+}
+
+module.exports.getAllCommunityMembers = async function (communityId) {
+  return (await Membership.find({
+    community: communityId,
+  }) || []).map(membership => membership.member)
 }
 
 module.exports.createMembership = async function (data = {}) {
