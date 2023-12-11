@@ -59,7 +59,7 @@ module.exports.leaveCommunity = async function (data) {
 }
 
 module.exports.getAllUsersCommunities = async function (data) {
-  return await getAllUserMemberships({ member: data.member })
+  return await getAllUserMemberships(data.member)
 }
 
 module.exports.getMultipleCommunities = async function (data) {
@@ -68,7 +68,7 @@ module.exports.getMultipleCommunities = async function (data) {
     sort: data.sort || "-createdAt",
     page: data.page || 1,
     limit: data.limit || 100,
-    fields: data.fields
+    fields: data.fields,
   }
   const CommunityQueryBuilder = new QueryBuilder(Community, query)
   return await CommunityQueryBuilder.find()
@@ -125,7 +125,7 @@ module.exports.routeControllers = {
   getByUser: routeTryCatcher(async function (req, res, next) {
     req.response = {
       communities: await module.exports.getAllUsersCommunities({
-        member: req.user._id, 
+        member: req.user._id,
       }),
       status: 200,
       message: "Success",

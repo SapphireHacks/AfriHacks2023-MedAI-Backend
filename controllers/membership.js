@@ -9,9 +9,11 @@ module.exports.findMembership = async function (data) {
 }
 
 module.exports.getAllUserMemberships = async function (userId) {
-  return await Membership.find({
-    member: userId,
-  }) || []
+  return (
+    (await Membership.find({
+      member: userId,
+    })) || []
+  )
 }
 
 module.exports.getAllCommunityMembers = async function (communityId) {

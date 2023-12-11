@@ -101,7 +101,7 @@ const getInitMessageHandler = socketTryCatcher(
   }
 )
 
-module.exports = {
+module.exports.eventHandlers = {
   [events.new]: newMessagesHandler,
   [events.getMany]: getMultipleMessagesHandler,
   [events.initMessage]: getInitMessageHandler,

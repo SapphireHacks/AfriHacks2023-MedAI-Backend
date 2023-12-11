@@ -1,5 +1,8 @@
 const { Server } = require("socket.io")
-const { namespacesEventsHandlers } = require("./namespaces")
+const {
+  namespacesEventsHandlers,
+  namespacesOnConnectHandlers,
+} = require("./namespaces")
 
 module.exports = function startSocketServer(server) {
   const io = new Server(server, {
@@ -47,7 +50,8 @@ module.exports.ioListening = (io, events) => {
 
 module.exports.namespaceListening = (io, namespace) => {
   let connections = new Set()
-  io.of(namespace).on("connection", (socket) => {
+  const nsp = io.of(namespace)
+  nsp.on("connection", (socket) => {
     console.log(`${namespace} nsp connected`)
     connections = onConnect(socket, connections)
     socket.join(socket.user._id.toString())
@@ -55,8 +59,15 @@ module.exports.namespaceListening = (io, namespace) => {
       connections.delete(socket.toString())
       socket.leave(socket.user._id)
     })
-    socket.onAny((event, payload) => console.log(event, payload))
+    socket.onAny((event, payload) =>
+      console.log(
+        `${event} was sent to ${namespace} ${new Intl.DateTimeFormat(
+          "en-GB"
+        ).format(Date.now())}`
+      )
+    )
     const namespaceEventHandlers = namespacesEventsHandlers[namespace]
-    socketListening(io, socket, namespaceEventHandlers)
+    socketListening(nsp, socket, namespaceEventHandlers)
+    namespacesOnConnectHandlers[namespace](nsp, socket)
   })
 }
