@@ -90,22 +90,23 @@ module.exports.logoutUser = routeTryCatcher(async function (req, res, next) {
 })
 
 module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
-  if (req.session) {
-    const user = req.session.token
-      ? await validateToken(req.session.token)
-      : null
-    if (user) {
-      req.response = {
-        message: "You are logged in!",
-        status: 200,
-        data: {
-          user,
-          token: req.session.token,
-        },
-      }
-      return next()
-    }
-  }
+  // /**/ hosting provider does not support!
+  // if (req.session) {
+  //   const user = req.session.token
+  //     ? await validateToken(req.session.token)
+  //     : null
+  //   if (user) {
+  //     req.response = {
+  //       message: "You are logged in!",
+  //       status: 200,
+  //       data: {
+  //         user,
+  //         token: req.session.token,
+  //       },
+  //     }
+  //     return next()
+  //   }
+  // }
   const user = await User.findOne({ email: req.body.email })
   req.response = {
     message: "Invalid credentials!",
@@ -118,7 +119,7 @@ module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
   )
   if (isMatchingPassword === false) return next()
   const token = signJwt({ _id: user._id })
-  req.session.token = token
+  // req.session.token = token
   req.response = {
     message: "You are logged in!",
     status: 200,
