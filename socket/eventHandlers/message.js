@@ -7,7 +7,7 @@ const {
   getSingleConversationById,
 } = require("../../controllers/conversation")
 const { socketTryCatcher } = require("../../utils/controllers")
-// const { getCompletion } = require("../../OpenAI/index.js")
+const { getCompletion } = require("../../OpenAI/index.js")
 
 const createDefaultStarterMessage = async (socket, conversationId) =>
   await createMessage({
@@ -44,21 +44,20 @@ const newMessagesHandler = socketTryCatcher(async (_io, socket, data = {}) => {
     role: "user",
     content: newMessage.content,
   })
-  // const messages = (await getMultipleMessages({
-  //   conversation,
-  //   userId,
-  //   query: { sort: "-createdAt", limit: 100 },
-  // })).map(({role, content}) => ({ role, content }))
+  const messages = (await getMultipleMessages({
+    conversation,
+    userId,
+    query: { sort: "-createdAt", limit: 100 },
+  })).map(({role, content}) => ({ role, content }))
 
-  // const aiReply = await getCompletion(messages, "json_object")
+  const aiReply = await getCompletion(messages)
 
+  console.log(aiReply, "heree")
   const aiMessage = await createMessage({
     conversation: conversation._id,
     conversationOwner: userId,
     role: "assistant",
-    content:
-      "Here is a placeholder response for now, while we wait for our AI model to finish learning 😂",
-    // content: JSON.stringify(aiReply),
+    content: JSON.stringify(aiReply),
   })
   socket.emit(events.new, {
     conversation,

@@ -6,11 +6,11 @@ module.exports.protect = routeTryCatcher(async function (req, _res, next) {
   const authHeader =
     req.headers["Authorization"] || req.headers["authorization"]
   let token
-  console.log("before deaug", req.headers, "debugg 10")
+  console.log("before debug", req.headers, "Be safe")
   if (authHeader) {
     token = authHeader.split("Bearer ")[1]
-    if (typeof token === "string") token = JSON.parse(token)
-    console.log(token, authHeader, "debugg 10")
+    // if (typeof token === "string") token = JSON.parse(token)
+    console.log(token, authHeader, "debugg Are you safe?")
   }
   // /* */ Hosting provider does not support
   // else if (req.session) {
@@ -18,7 +18,7 @@ module.exports.protect = routeTryCatcher(async function (req, _res, next) {
   //   console.log("sessions work", token, req.session)
   // }
   if (!token) return next(new CustomError("Not allowed!", 403))
-  console.log("vvalid token")
+  console.log("valid token")
   const user = await validateToken(token)
   if (!user) return next(new CustomError("Not allowed!", 403))
   console.log("after user? how")
