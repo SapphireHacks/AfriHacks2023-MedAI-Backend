@@ -3,7 +3,8 @@ const { validateToken } = require("../utils/security")
 const CustomError = require("../utils/error")
 
 module.exports.protect = routeTryCatcher(async function (req, _res, next) {
-  const authHeader = req.headers["authorization"]
+  const authHeader =
+    req.headers["Authorization"] || req.headers["authorization"]
   let token
   console.log("before deaug", authHeader, "debugg 10")
   if (authHeader) {
