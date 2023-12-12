@@ -109,7 +109,9 @@ module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
   //     return next()
   //   }
   // }
-  const user = await User.findOne({ $or: [{ email: req.body.email }, { userName: req.body.email }] })
+  const user = await User.findOne({
+    $or: [{ email: req.body.email }, { userName: req.body.email }],
+  })
   req.response = {
     message: "Invalid credentials!",
     status: 400,
@@ -149,6 +151,7 @@ module.exports.updateUserBySession = routeTryCatcher(async function (
     currentHealthConditions,
     hasAcceptedCommunityTerms,
     dob,
+    gender,
   } = req.body
   const user = await User.findOneAndUpdate(
     { _id: req.user._id },
@@ -163,6 +166,7 @@ module.exports.updateUserBySession = routeTryCatcher(async function (
       currentHealthConditions,
       hasAcceptedCommunityTerms,
       dob,
+      gender,
     },
     { new: true }
   )

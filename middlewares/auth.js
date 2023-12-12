@@ -5,17 +5,21 @@ const CustomError = require("../utils/error")
 module.exports.protect = routeTryCatcher(async function (req, _res, next) {
   const authHeader = req.headers["authorization"]
   let token
+  console.log("before deaug", authHeader, "debugg 10")
   if (authHeader) {
     token = authHeader.split("Bearer ")[1]
-  } 
+    console.log(token, authHeader, "debugg 10")
+  }
   // /* */ Hosting provider does not support
   // else if (req.session) {
   //   token = req.session.token
   //   console.log("sessions work", token, req.session)
   // }
   if (!token) return next(new CustomError("Not allowed!", 403))
+  console.log("vvalid token")
   const user = await validateToken(token)
   if (!user) return next(new CustomError("Not allowed!", 403))
+  console.log("after user? how")
   req.user = user
   next()
 })
