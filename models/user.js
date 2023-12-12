@@ -71,6 +71,12 @@ const userSchema = new mongoose.Schema(
     reportsCount: {
       type: Number,
       default: 0
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      lowercase: true,
+      trim: true,
     }
   },
   {

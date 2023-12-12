@@ -149,6 +149,7 @@ module.exports.updateUserBySession = routeTryCatcher(async function (
     currentHealthConditions,
     hasAcceptedCommunityTerms,
     dob,
+    gender
   } = req.body
   const user = await User.findOneAndUpdate(
     { _id: req.user._id },
@@ -163,6 +164,7 @@ module.exports.updateUserBySession = routeTryCatcher(async function (
       currentHealthConditions,
       hasAcceptedCommunityTerms,
       dob,
+      gender
     },
     { new: true }
   )
