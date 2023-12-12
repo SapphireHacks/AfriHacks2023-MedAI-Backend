@@ -6,9 +6,10 @@ module.exports.protect = routeTryCatcher(async function (req, _res, next) {
   const authHeader =
     req.headers["Authorization"] || req.headers["authorization"]
   let token
-  console.log("before deaug", authHeader, "debugg 10")
+  console.log("before deaug", req.headers, "debugg 10")
   if (authHeader) {
     token = authHeader.split("Bearer ")[1]
+    if (typeof token === "string") token = JSON.parse(token)
     console.log(token, authHeader, "debugg 10")
   }
   // /* */ Hosting provider does not support
