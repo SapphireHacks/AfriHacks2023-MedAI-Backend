@@ -103,12 +103,12 @@ class EmailSender {
         views: { root: path.join("views", "emails") },
         preview: isDev,
       })
-      return email.send({
+      email.send({
         message: {
           ...this.msg,
           html: await email.render(this.template, this.options),
         },
-      })
+      }).then((...res) => console.log(res)).catch((err) => console.log(err))
     } else {
       this.generateTxtAndHTML()
       return new Promise((resolve, reject) => {

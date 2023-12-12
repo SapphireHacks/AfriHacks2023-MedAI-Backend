@@ -12,13 +12,14 @@ const crypto = require("crypto")
 module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
   const expireAt = new Date(Date.now())
   expireAt.setMonth(expireAt.getMonth() + 1)
-  const { email, password, hasAcceptedAppTermsOfService } = req.body
+  const { email, password, hasAcceptedAppTermsOfService, userName } = req.body
   let user = new User({
     email,
     password: await bcryptEncrypt(password),
     emailVerificationToken: crypto.randomBytes(48).toString("hex"),
     expireAt,
     hasAcceptedAppTermsOfService,
+    userName,
   })
   user = await user.save()
   if (user) {
@@ -46,6 +47,7 @@ module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
           "Account created successfully! An email verification link has been sent to your email.",
         status: 201,
       }
+      console.log("signup line 50")
       return next()
     } catch (err) {
       console.log(err)
@@ -107,7 +109,7 @@ module.exports.loginUser = routeTryCatcher(async function (req, res, next) {
   //     return next()
   //   }
   // }
-  const user = await User.findOne({ email: req.body.email })
+  const user = await User.findOne({ $or: [{ email: req.body.email }, { userName: req.body.email }] })
   req.response = {
     message: "Invalid credentials!",
     status: 400,
