@@ -30,7 +30,7 @@ module.exports.signupUser = routeTryCatcher(async function (req, res, next) {
         subject: "Welcome to MedAI",
       }
       const welcomeOptions = {
-        emailVerificationLink: `https://medai-afrihacks2023.vercel.app/verify-email/${user._id}/${user.emailVerificationToken}`,
+        emailVerificationLink: `https://medai-afrihacks2023.vercel.app/auth/verify-email/${user._id}/${user.emailVerificationToken}`,
         clientUrl: process.env.CLIENT_URL,
       }
       await new EmailSender({
